@@ -5,9 +5,10 @@ import PriceTag from './styles/PriceTag';
 import formatMoney from '../lib/formatMoney';
 
 export default function Product( { product } ){
+    console.log(product);
     return(
         <ItemStlyes>
-            <img src={product?.photo?.image?.publicUrlTransormed} alt={product.name} />
+            <img src={product?.photo?.image?.publicUrlTransformed} alt={product.name} />
             <Title>
                 <Link href={`/product/${product.id}`}>{product.name}</Link>
             </Title>
