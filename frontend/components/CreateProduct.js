@@ -1,5 +1,36 @@
+import { useMutation } from '@apollo/client';
+import gql from 'graphql-tag';
 import useForm from '../lib/useForm';
 import Form from './styles/Form';
+
+const CREATE_PRODUCT_MUTATION = gql`
+    mutation CREATE_PRODUCT_MUTATION(
+        #which variables are getting passed in?
+        #what types are they?
+        $name: String!
+        $description: String!
+        $price: Int!
+        $image: Upload
+
+    ){
+        createProduct(data:{
+            name: $name
+            description: $description
+            price: $price
+            status: "AVAILABLE"
+            photo: {
+                create: {
+                    image: $image,
+                    altText: $name
+                }
+            }
+        }){
+            id
+            price
+            description	
+            name
+        }
+    }`;
 
 export default function CreateProduct(){
     
@@ -10,9 +41,21 @@ export default function CreateProduct(){
         description: 'Tingz be poppin off',
     });
 
+    const [ createProduct, { loading, error, data } ] = useMutation(CREATE_PRODUCT_MUTATION, {
+        variables: inputs,
+    });
+
+    console.log(createProduct);
+
     return(
-        <Form onSubmit={(e) => e.preventDefault()}>
-            <fieldset>
+        <Form onSubmit={async (e) => {
+            e.preventDefault();
+            //the data we are sending
+            //our function we got from useMutation() hook, we passed our query and vars above
+            const res = await createProduct();
+            clearForm();
+        }}>
+            <fieldset disabled={loading} aria-busy={loading}>
                 <label htmlFor='image'>
                     <input 
                         type='file' 
