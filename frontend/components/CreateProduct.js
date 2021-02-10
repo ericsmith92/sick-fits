@@ -57,7 +57,7 @@ export default function CreateProduct(){
             clearForm();
             //go to that products page
             Router.push({
-                pathname: `/production/${res.data.createProduct.id}`
+                pathname: `/product/${res.data.createProduct.id}`
             });
         }}>
             <fieldset disabled={loading} aria-busy={loading}>
